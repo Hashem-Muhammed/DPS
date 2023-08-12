@@ -1,9 +1,10 @@
 from django.db import models
+from django.core.validators import FileExtensionValidator
 
 
 class Image(models.Model):
     image = models.ImageField(upload_to="images/")
-    wdith = models.IntegerField()
+    width = models.IntegerField()
     height = models.IntegerField()
     number_of_channels = models.IntegerField()
 
