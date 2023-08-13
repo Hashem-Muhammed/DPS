@@ -6,7 +6,11 @@ from rest_framework import status
 from .services import b64_to_pdf
 from rest_framework import viewsets
 from .models import *
+from django.shortcuts import get_object_or_404
+
 # Create your views here.
+
+
 @api_view(["POST"])
 def upload_file(request):
     if request.data.get("image"):
@@ -32,3 +36,18 @@ class DocumentsViewSet(viewsets.ModelViewSet):
     queryset = Document.objects.all()
     serializer_class = DocumentSerializer
 
+@api_view(['POST'])
+def rotate_image(request):
+    image_id = request.data.get('id', None)
+    rotate_angel = request.data.get('rotate_angel', None)
+    if image_id and rotate_angel:
+        image = get_object_or_404(Image , id = image_id)
+        image.rotate_image_by(int(rotate_angel))
+        image.save()
+        serializer = ImageSerializer(image)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response( status = status.HTTP_400_BAD_REQUEST) 
+    
+
+            
+    
