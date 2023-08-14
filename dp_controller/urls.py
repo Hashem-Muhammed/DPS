@@ -9,7 +9,9 @@ router.register(r'pdfs', DocumentsViewSet, basename='pdfs')
 urlpatterns = [
     path('upload/', view = upload_file ),
     path('', include(router.urls)),
-    path('rotate/', view = rotate_image)
+    path('rotate/', view = rotate_image),
+    path('convert-pdf-to-image/', view = pdf2images)
+
 
 ]
  

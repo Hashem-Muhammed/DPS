@@ -16,10 +16,7 @@ def upload_file(request):
     if request.data.get("image"):
         serializer = ImageSerializer(data=request.data)
     elif request.data.get("document"):
-        request.data._mutable = True
         request.data["document"] = b64_to_pdf(request.data["document"])
-        request.data._mutable = False
-
         serializer = DocumentSerializer(data=request.data)
 
     if serializer.is_valid():
@@ -47,7 +44,14 @@ def rotate_image(request):
         serializer = ImageSerializer(image)
         return Response(serializer.data, status=status.HTTP_200_OK)
     return Response( status = status.HTTP_400_BAD_REQUEST) 
-    
 
-            
+@api_view(['POST'])
+def pdf2images(request):
+    pdf_id = request.data.get('id',None)
+    if pdf_id:
+        pdf = get_object_or_404(Document, id = pdf_id)
+        image = pdf.convert_to_image()
+        serializer = ImageSerializer(image)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(status=status.HTTP_400_BAD_REQUEST)        
     
