@@ -8,7 +8,6 @@ from rest_framework import viewsets
 from .models import *
 from django.shortcuts import get_object_or_404
 
-# Create your views here.
 
 
 @api_view(["POST"])
